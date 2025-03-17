@@ -4,12 +4,14 @@ export const fetchParts = async (category) => {
       cpu: [
         { id: 1, name: "Intel Core i7-13700K", score: 90 },
         { id: 2, name: "AMD Ryzen 7 5800X", score: 85 },
+        { id: 2, name: "AMD Ryzen 7 5800X", score: 85 },
       ],
       gpu: [
         { id: 1, name: "NVIDIA RTX 4070", score: 95 },
         { id: 2, name: "AMD Radeon RX 7900 XT", score: 92 },
         { id: 2, name: "AMD Radeon RX 7900", score: 90 },
         { id: 2, name: "RTX 5070", score: 90 },
+        { id: 2, name: "RTX 5080", score: 90 },
       ],
     };
   
