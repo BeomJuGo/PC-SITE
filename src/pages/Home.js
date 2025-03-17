@@ -18,7 +18,7 @@ const Home = () => {
           📀 메모리
         </Link>
         <Link to="/AI추천" className="p-4 bg-gray-100 rounded-lg text-center">
-          🧠AI 추천
+          🧠AI 추천(CHAT GPT)
         </Link>
       </div>
     </div>
