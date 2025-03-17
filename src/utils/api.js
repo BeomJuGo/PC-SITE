@@ -1,4 +1,3 @@
-// ✅ 부품 데이터 (임시 JSON 데이터)
 export const fetchParts = async (category) => {
     const partsData = {
       cpu: [
@@ -31,7 +30,6 @@ export const fetchParts = async (category) => {
     });
   };
   
-  // ✅ 네이버 쇼핑 API를 통해 가격 가져오기
   export const fetchNaverPrice = async (query) => {
     try {
       console.log(`🟢 [프론트엔드 API 요청] ${query}`);
