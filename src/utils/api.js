@@ -2,16 +2,25 @@
 export const fetchParts = async (category) => {
     const partsData = {
       cpu: [
-        { id: 1, name: "Intel Core i7-13700K", score: 90 },
-        { id: 2, name: "AMD Ryzen 7 5800X", score: 85 },
-        { id: 2, name: "AMD Ryzen 7 5600X", score: 80 },
+        { id: 1, name: "Intel Core i5-14600K", score: 90 },
+        { id: 2, name: "Intel Core i9-14900K", score:  },
+        { id: 3, name: "Intel Core i5-14400F", score:  },
+        { id: 4, name: "Intel Core Ultra7 265K", score:  },
+        { id: 5, name: "Intel Core Ultra9 285K", score:  },
+        { id: 6, name: "Intel Core Ultra5 225K", score:  },
+        { id: 7, name: "AMD Ryzen 5 7500F", score:  },
+        { id: 8, name: "AMD Ryzen 7 9600X", score:  },
+        { id: 9, name: "AMD Ryzen 7 9700X", score:  },
+        { id: 10, name: "AMD Ryzen 9 9950X", score:  },
+        { id: 11, name: "AMD Ryzen 7 7800X 3D", score:  },
+        { id: 12, name: "AMD Ryzen 7 9800X 3D", score:  },
       ],
       gpu: [
         { id: 1, name: "NVIDIA RTX 4070", score: 95 },
         { id: 2, name: "AMD Radeon RX 7900 XT", score: 92 },
-        { id: 2, name: "AMD Radeon RX 7900", score: 90 },
-        { id: 2, name: "RTX 5070", score: 90 },
-        { id: 2, name: "RTX 5080", score: 92 },
+        { id: 3, name: "AMD Radeon RX 7900", score: 90 },
+        { id: 4, name: "RTX 5070", score: 90 },
+        { id: 5, name: "RTX 5080", score: 92 },
       ],
     };
   
