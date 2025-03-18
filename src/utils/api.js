@@ -11,8 +11,6 @@ export const fetchParts = async (category) => {
         { id: 8, name: "AMD Ryzen 7 9600X", score: 11 },
         { id: 9, name: "AMD Ryzen 7 9700X", score: 11 },
         { id: 10, name: "AMD Ryzen 9 9950X", score: 11 },
-        { id: 11, name: "AMD Ryzen 7 7800X 3D", score: 11 },
-        { id: 12, name: "AMD Ryzen 7 9800X 3D", score: 11 },
       ],
       gpu: [
         { id: 1, name: "NVIDIA RTX 4070", score: 95 },
