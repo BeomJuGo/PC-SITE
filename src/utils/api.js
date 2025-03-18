@@ -5,7 +5,7 @@ export const fetchParts = async (category) => {
         { id: 2, name: "Intel Core i9-14900K", score: 21 },
         { id: 3, name: "Intel Core i5-14400F", score: 31 },
         { id: 4, name: "Intel Core Ultra7 265K", score: 51 },
-        { id: 5, name: "Intel Core Ultra9 285K", score: 11 },
+        { id: 5, name: "Intel Core Ultra9 285K", score: 61 },
         { id: 6, name: "Intel Core Ultra5 225K", score: 11 },
         { id: 7, name: "AMD Ryzen 5 7500F", score: 11 },
         { id: 8, name: "AMD Ryzen 7 9600X", score: 11 },
