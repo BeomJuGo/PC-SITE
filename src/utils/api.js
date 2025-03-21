@@ -46,7 +46,10 @@ export const fetchGPTReview = async (partName) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ partName }),
+      body: JSON.stringify({
+        partName,
+        max_tokens: 100,  // 여기서 max_tokens 값을 추가하여 한줄평 길이를 늘림
+      }),
     });
 
     const data = await response.json();
