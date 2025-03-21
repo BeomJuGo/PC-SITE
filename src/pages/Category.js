@@ -44,7 +44,7 @@ const Category = () => {
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
             <p className="text-gray-700 mb-1">💰 가격: {Number(part.price).toLocaleString()}원</p>
             <p className="text-gray-700 mb-1">🔥 성능 점수: {part.score}</p>
-            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full overflow-visible">
+            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
             </p>
           </div>
