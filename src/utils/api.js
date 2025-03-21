@@ -70,17 +70,17 @@ export const fetchCpuBenchmark = async (cpuName) => {
     const data = await response.json();
 
     console.log(`✅ [Geekbench CPU 벤치마크 응답] ${cpuName}:`, data);
-    return data.benchmarkScore || "점수 없음";
+    return data.benchmarkScore || { singleCore: "점수 없음", multiCore: "점수 없음" };
   } catch (error) {
     console.error("❌ Geekbench CPU 벤치마크 점수 가져오기 오류:", error);
-    return "점수 없음";
+    return { singleCore: "점수 없음", multiCore: "점수 없음" };
   }
 };
 
 // ✅ GPU 벤치마크 점수 가져오기
 export const fetchGpuBenchmark = async (gpuName) => {
   try {
-    const cleanName = gpuName.split(":")[0];
+    const cleanName = gpuName.split(":"[0]);
     console.log(`🔍 [GPU 벤치마크 요청] ${cleanName}`);
 
     const response = await fetch(
