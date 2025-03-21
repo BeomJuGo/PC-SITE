@@ -13,7 +13,7 @@ export const fetchParts = async (category) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(partsData[category] || []);
-    }, 500); // 0.5초 딜레이 (실제 API 요청처럼)
+    }, 500);
   });
 };
 
@@ -45,15 +45,12 @@ export const fetchGPTReview = async (partName) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        partName,
-        max_tokens: 100,
-      }),
+      body: JSON.stringify({ partName }),
     });
 
     const data = await response.json();
-
     console.log("💬 [GPT 응답]", data);
+
     return data.review || "한줄평 없음";
   } catch (error) {
     console.error("❌ GPT 한줄평 요청 오류:", error);
@@ -64,15 +61,15 @@ export const fetchGPTReview = async (partName) => {
 // ✅ Geekbench 기반 CPU 벤치마크 점수 가져오기
 export const fetchCpuBenchmark = async (cpuName) => {
   try {
-    const cleanName = cpuName.replace(/ /g, "-").toLowerCase();
-    console.log(`🔍 [Geekbench CPU 벤치마크 요청] ${cleanName}`);
+    const encodedName = encodeURIComponent(cpuName);
+    console.log(`🔍 [Geekbench CPU 벤치마크 요청] ${encodedName}`);
 
     const response = await fetch(
-      `https://pc-site-backend.onrender.com/api/cpu-benchmark?cpu=${encodeURIComponent(cleanName)}`
+      `https://pc-site-backend.onrender.com/api/cpu-benchmark?cpu=${encodedName}`
     );
     const data = await response.json();
 
-    console.log(`✅ [Geekbench CPU 벤치마크 응답] ${cleanName}:`, data);
+    console.log(`✅ [Geekbench CPU 벤치마크 응답] ${cpuName}:`, data);
     return data.benchmarkScore || "점수 없음";
   } catch (error) {
     console.error("❌ Geekbench CPU 벤치마크 점수 가져오기 오류:", error);
@@ -83,7 +80,7 @@ export const fetchCpuBenchmark = async (cpuName) => {
 // ✅ GPU 벤치마크 점수 가져오기
 export const fetchGpuBenchmark = async (gpuName) => {
   try {
-    const cleanName = gpuName.split(":")[0]; // ✅ 불필요한 접미어 제거
+    const cleanName = gpuName.split(":")[0];
     console.log(`🔍 [GPU 벤치마크 요청] ${cleanName}`);
 
     const response = await fetch(
