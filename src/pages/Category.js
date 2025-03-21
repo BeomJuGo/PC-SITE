@@ -37,7 +37,7 @@ const Category = () => {
               💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
             </p>
             <p className="text-gray-700 mb-1">
-              ⚙️ 벤치마크 점수: {part.benchmarkScore || "점수 없음"}
+              ⚙️ Geekbench 벤치마크 점수: {part.benchmarkScore || "점수 없음"}
             </p>
             <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
