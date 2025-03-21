@@ -32,7 +32,7 @@ export const fetchParts = async (category) => {
     try {
       console.log(`🟢 [프론트엔드 API 요청] ${query}`);
       
-      const response = await fetch("https://pc-site-api.onrender.com/api/naver-price?query=${encodeURIComponent(query)}`);
+      const response = await fetch("https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}");
       const data = await response.json();
   
       console.log(`🟢 [프론트엔드 API 응답]`, data);
