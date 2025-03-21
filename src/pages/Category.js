@@ -33,12 +33,18 @@ const Category = () => {
             className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition flex flex-col h-auto"
           >
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
+            
             <p className="text-gray-700 mb-1">
               💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
             </p>
+
             <p className="text-gray-700 mb-1">
-              ⚙️ Geekbench 벤치마크 점수: {part.benchmarkScore || "점수 없음"}
+              ⚙️ Geekbench 벤치마크 점수:{" "}
+              {typeof part.benchmarkScore === "object"
+                ? `싱글코어: ${part.benchmarkScore.singleCore}, 멀티코어: ${part.benchmarkScore.multiCore}`
+                : part.benchmarkScore || "점수 없음"}
             </p>
+
             <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
             </p>
