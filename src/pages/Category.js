@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchParts, fetchNaverPrice, fetchGPTReview } from "../utils/api";  // ✅ GPT 리뷰 함수도 import
+import { fetchParts, fetchNaverPrice, fetchGPTReview } from "../utils/api";
 
 const Category = () => {
   const { category } = useParams();
@@ -15,7 +15,7 @@ const Category = () => {
       const enrichedParts = await Promise.all(
         rawParts.map(async (part) => {
           const price = await fetchNaverPrice(part.name);
-          const review = await fetchGPTReview(part.name);  // ✅ GPT 한줄평 요청
+          const review = await fetchGPTReview(part.name);
           return { ...part, price, review };
         })
       );
@@ -32,18 +32,19 @@ const Category = () => {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <h2 className="text-3xl font-bold mb-4">{category.toUpperCase()} 목록</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {parts.map((part) => (
           <div
             key={part.id}
-            className="p-4 border rounded-xl shadow-md bg-white hover:shadow-lg transition max-w-md"
+            className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-2xl shadow-md bg-white hover:shadow-lg transition"
           >
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
-            <p className="text-gray-600">💰 가격: {Number(part.price).toLocaleString()}원</p>
-            <p className="text-gray-600">🔥 성능 점수: {part.score}</p>
-            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words">
+            <p className="text-gray-700 mb-1">💰 가격: {Number(part.price).toLocaleString()}원</p>
+            <p className="text-gray-700 mb-1">🔥 성능 점수: {part.score}</p>
+            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed">
               💬 AI 한줄평: {part.review}
             </p>
           </div>
