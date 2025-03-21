@@ -33,6 +33,7 @@ const Category = () => {
             className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition flex flex-col h-auto"
           >
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
+
             <p className="text-gray-700 mb-1">
               💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
             </p>
