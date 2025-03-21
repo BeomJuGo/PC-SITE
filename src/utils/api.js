@@ -28,19 +28,19 @@ export const fetchParts = async (category) => {
     });
   };
   
-  export const fetchNaverPrice = async (query) => {
-    try {
-      console.log(`🟢 [프론트엔드 API 요청] ${query}`);
-      
-      const response = await fetch("https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}");
-      const data = await response.json();
-  
-      console.log(`🟢 [프론트엔드 API 응답]`, data);
-      
-      return data.items[0]?.lprice || "가격 정보 없음";
-    } catch (error) {
-      console.error("❌ 네이버 쇼핑 API 요청 오류:", error);
-      return "가격 정보를 가져올 수 없습니다.";
-    }
-  };
+export const fetchNaverPrice = async (query) => {
+  try {
+    console.log(`🟢 [프론트엔드 API 요청] ${query}`);
+    
+    const response = await fetch(`https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}`);
+    const data = await response.json();
+
+    console.log(`🟢 [프론트엔드 API 응답]`, data);
+    
+    return data.items[0]?.lprice || "가격 정보 없음";
+  } catch (error) {
+    console.error("❌ 네이버 쇼핑 API 요청 오류:", error);
+    return "가격 정보를 가져올 수 없습니다.";
+  }
+};
   
