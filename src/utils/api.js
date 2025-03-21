@@ -28,7 +28,6 @@ export const fetchNaverPrice = async (query) => {
     const data = await response.json();
 
     console.log(`🟢 [프론트엔드 가격 응답]`, data);
-
     return data.items[0]?.lprice || "가격 정보 없음";
   } catch (error) {
     console.error("❌ 네이버 쇼핑 API 요청 오류:", error);
@@ -62,21 +61,21 @@ export const fetchGPTReview = async (partName) => {
   }
 };
 
-// ✅ CPU 벤치마크 점수 가져오기
+// ✅ Geekbench 기반 CPU 벤치마크 점수 가져오기
 export const fetchCpuBenchmark = async (cpuName) => {
   try {
-    const cleanName = cpuName.split(":")[0]; // ✅ 불필요한 접미어 제거
-    console.log(`🔍 [CPU 벤치마크 요청] ${cleanName}`);
+    const cleanName = cpuName.replace(/ /g, "-").toLowerCase();
+    console.log(`🔍 [Geekbench CPU 벤치마크 요청] ${cleanName}`);
 
     const response = await fetch(
       `https://pc-site-backend.onrender.com/api/cpu-benchmark?cpu=${encodeURIComponent(cleanName)}`
     );
     const data = await response.json();
 
-    console.log(`✅ [CPU 벤치마크 응답] ${cleanName}:`, data);
+    console.log(`✅ [Geekbench CPU 벤치마크 응답] ${cleanName}:`, data);
     return data.benchmarkScore || "점수 없음";
   } catch (error) {
-    console.error("❌ CPU 벤치마크 점수 가져오기 오류:", error);
+    console.error("❌ Geekbench CPU 벤치마크 점수 가져오기 오류:", error);
     return "점수 없음";
   }
 };
