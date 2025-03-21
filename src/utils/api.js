@@ -17,21 +17,20 @@ export const fetchParts = async (category) => {
   });
 };
 
-// ✅ 네이버 쇼핑 API로 가격 정보 가져오기
+// ✅ 네이버 쇼핑 가격 정보
 export const fetchNaverPrice = async (query) => {
   try {
     const response = await fetch(
       `https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}`
     );
     const data = await response.json();
-    return data.items[0]?.lprice || "가격 정보 없음";
-  } catch (error) {
-    console.error("❌ 가격 정보 오류:", error);
+    return data.items?.[0]?.lprice || "가격 정보 없음";
+  } catch {
     return "가격 정보를 가져올 수 없습니다.";
   }
 };
 
-// ✅ GPT API를 이용한 AI 한줄평 요청
+// ✅ GPT 한줄평 요청
 export const fetchGPTReview = async (partName) => {
   try {
     const response = await fetch("https://pc-site-backend.onrender.com/api/gpt-review", {
@@ -41,13 +40,12 @@ export const fetchGPTReview = async (partName) => {
     });
     const data = await response.json();
     return data.review || "한줄평 없음";
-  } catch (error) {
-    console.error("❌ GPT 한줄평 오류:", error);
+  } catch {
     return "한줄평을 가져오는 데 실패했습니다.";
   }
 };
 
-// ✅ CPU 벤치마크 점수 가져오기
+// ✅ CPU Geekbench 점수 가져오기
 export const fetchCpuBenchmark = async (cpuName) => {
   try {
     const response = await fetch(
@@ -55,18 +53,17 @@ export const fetchCpuBenchmark = async (cpuName) => {
     );
     const data = await response.json();
     return data.benchmarkScore || { singleCore: "점수 없음", multiCore: "점수 없음" };
-  } catch (error) {
-    console.error("❌ CPU 벤치마크 오류:", error);
+  } catch {
     return { singleCore: "점수 없음", multiCore: "점수 없음" };
   }
 };
 
-// ✅ GPU 벤치마크 점수 가져오기
+// ✅ GPU 벤치마크 (현재 지원 예정)
 export const fetchGpuBenchmark = async (gpuName) => {
   return "지원 예정";
 };
 
-// ✅ 부품 데이터 + 가격 + AI 한줄평 + 벤치마크 점수 통합 가져오기
+// ✅ 부품 전체 데이터 수집
 export const fetchFullPartData = async (category) => {
   const parts = await fetchParts(category);
 
@@ -74,13 +71,10 @@ export const fetchFullPartData = async (category) => {
     parts.map(async (part) => {
       const price = await fetchNaverPrice(part.name);
       const review = await fetchGPTReview(part.name);
-
-      let benchmarkScore = "점수 없음";
-      if (category === "cpu") {
-        benchmarkScore = await fetchCpuBenchmark(part.name);
-      } else if (category === "gpu") {
-        benchmarkScore = await fetchGpuBenchmark(part.name);
-      }
+      const benchmarkScore =
+        category === "cpu"
+          ? await fetchCpuBenchmark(part.name)
+          : await fetchGpuBenchmark(part.name);
 
       return { ...part, price, review, benchmarkScore };
     })
