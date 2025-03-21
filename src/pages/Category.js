@@ -39,12 +39,12 @@ const Category = () => {
         {parts.map((part) => (
           <div
             key={part.id}
-            className="w-full max-w-sm mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition"
+            className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition"
           >
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
             <p className="text-gray-700 mb-1">💰 가격: {Number(part.price).toLocaleString()}원</p>
             <p className="text-gray-700 mb-1">🔥 성능 점수: {part.score}</p>
-            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed">
+            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
             </p>
           </div>
