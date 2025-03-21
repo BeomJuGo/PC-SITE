@@ -22,7 +22,9 @@ export const fetchNaverPrice = async (query) => {
   try {
     console.log(`🟢 [프론트엔드 가격 API 요청] ${query}`);
 
-    const response = await fetch(`https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}`);
+    const response = await fetch(
+      `https://pc-site-backend.onrender.com/api/naver-price?query=${encodeURIComponent(query)}`
+    );
     const data = await response.json();
 
     console.log(`🟢 [프론트엔드 가격 응답]`, data);
@@ -46,7 +48,7 @@ export const fetchGPTReview = async (partName) => {
       },
       body: JSON.stringify({
         partName,
-        max_tokens: 100,  // ✅ max_tokens 값을 추가하여 한줄평 길이를 늘림
+        max_tokens: 100,
       }),
     });
 
@@ -63,12 +65,15 @@ export const fetchGPTReview = async (partName) => {
 // ✅ CPU 벤치마크 점수 가져오기
 export const fetchCpuBenchmark = async (cpuName) => {
   try {
-    console.log(`🔍 [CPU 벤치마크 요청] ${cpuName}`);
+    const cleanName = cpuName.split(":")[0]; // ✅ 불필요한 접미어 제거
+    console.log(`🔍 [CPU 벤치마크 요청] ${cleanName}`);
 
-    const response = await fetch(`https://pc-site-backend.onrender.com/api/cpu-benchmark?cpu=${encodeURIComponent(cpuName)}`);
+    const response = await fetch(
+      `https://pc-site-backend.onrender.com/api/cpu-benchmark?cpu=${encodeURIComponent(cleanName)}`
+    );
     const data = await response.json();
 
-    console.log(`✅ [CPU 벤치마크 응답] ${cpuName}:`, data);
+    console.log(`✅ [CPU 벤치마크 응답] ${cleanName}:`, data);
     return data.benchmarkScore || "점수 없음";
   } catch (error) {
     console.error("❌ CPU 벤치마크 점수 가져오기 오류:", error);
@@ -79,12 +84,15 @@ export const fetchCpuBenchmark = async (cpuName) => {
 // ✅ GPU 벤치마크 점수 가져오기
 export const fetchGpuBenchmark = async (gpuName) => {
   try {
-    console.log(`🔍 [GPU 벤치마크 요청] ${gpuName}`);
+    const cleanName = gpuName.split(":")[0]; // ✅ 불필요한 접미어 제거
+    console.log(`🔍 [GPU 벤치마크 요청] ${cleanName}`);
 
-    const response = await fetch(`https://pc-site-backend.onrender.com/api/gpu-benchmark?gpu=${encodeURIComponent(gpuName)}`);
+    const response = await fetch(
+      `https://pc-site-backend.onrender.com/api/gpu-benchmark?gpu=${encodeURIComponent(cleanName)}`
+    );
     const data = await response.json();
 
-    console.log(`✅ [GPU 벤치마크 응답] ${gpuName}:`, data);
+    console.log(`✅ [GPU 벤치마크 응답] ${cleanName}:`, data);
     return data.benchmarkScore || "점수 없음";
   } catch (error) {
     console.error("❌ GPU 벤치마크 점수 가져오기 오류:", error);
@@ -102,7 +110,6 @@ export const fetchFullPartData = async (category) => {
         const price = await fetchNaverPrice(part.name);
         const review = await fetchGPTReview(part.name);
 
-        // ✅ 벤치마크 점수 가져오기
         let benchmarkScore = "점수 없음";
         if (category === "cpu") {
           benchmarkScore = await fetchCpuBenchmark(part.name);
