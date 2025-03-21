@@ -36,11 +36,16 @@ const Category = () => {
       <h2 className="text-3xl font-bold mb-4">{category.toUpperCase()} 목록</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {parts.map((part) => (
-          <div key={part.id} className="p-4 border rounded-xl shadow-md bg-white hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold">{part.name}</h3>
+          <div
+            key={part.id}
+            className="p-4 border rounded-xl shadow-md bg-white hover:shadow-lg transition max-w-md"
+          >
+            <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
             <p className="text-gray-600">💰 가격: {Number(part.price).toLocaleString()}원</p>
             <p className="text-gray-600">🔥 성능 점수: {part.score}</p>
-            <p className="text-blue-600 italic mt-2">💬 AI 한줄평: {part.review}</p> {/* ✅ 한줄평 표시 */}
+            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words">
+              💬 AI 한줄평: {part.review}
+            </p>
           </div>
         ))}
       </div>
