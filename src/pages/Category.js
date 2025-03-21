@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchParts, fetchNaverPrice, fetchGPTReview } from "../utils/api";
+import { fetchFullPartData } from "../utils/api"; // ✅ 통합된 데이터 가져오기
 
 const Category = () => {
   const { category } = useParams();
@@ -10,16 +10,7 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const rawParts = await fetchParts(category);
-
-      const enrichedParts = await Promise.all(
-        rawParts.map(async (part) => {
-          const price = await fetchNaverPrice(part.name);
-          const review = await fetchGPTReview(part.name);
-          return { ...part, price, review };
-        })
-      );
-
+      const enrichedParts = await fetchFullPartData(category); // ✅ 가격 + 한줄평 + 벤치마크
       setParts(enrichedParts);
       setLoading(false);
     };
@@ -42,8 +33,12 @@ const Category = () => {
             className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition flex flex-col h-auto"
           >
             <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
-            <p className="text-gray-700 mb-1">💰 가격: {Number(part.price).toLocaleString()}원</p>
-            <p className="text-gray-700 mb-1">🔥 성능 점수: {part.score}</p>
+            <p className="text-gray-700 mb-1">
+              💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
+            </p>
+            <p className="text-gray-700 mb-1">
+              ⚙️ 벤치마크 점수: {part.benchmarkScore || "점수 없음"}
+            </p>
             <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
             </p>
