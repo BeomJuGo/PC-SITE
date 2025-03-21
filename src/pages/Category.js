@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchFullPartData } from "../utils/api"; // ✅ 통합된 데이터 가져오기
+import { fetchFullPartData } from "../utils/api";
 
 const Category = () => {
   const { category } = useParams();
@@ -10,7 +10,7 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const enrichedParts = await fetchFullPartData(category); // ✅ 가격 + 한줄평 + 벤치마크
+      const enrichedParts = await fetchFullPartData(category);
       setParts(enrichedParts);
       setLoading(false);
     };
@@ -36,14 +36,21 @@ const Category = () => {
             <p className="text-gray-700 mb-1">
               💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
             </p>
-            {typeof part.benchmarkScore === "object" ? (
-              <>
-                <p className="text-gray-700 mb-1">⚙️ Geekbench Single-Core: {part.benchmarkScore.singleCore}</p>
-                <p className="text-gray-700 mb-1">⚙️ Geekbench Multi-Core: {part.benchmarkScore.multiCore}</p>
-              </>
+            
+            {category === "cpu" ? (
+              <div className="text-gray-700 mb-1">
+                ⚙️ Geekbench 점수:  
+                <ul className="ml-4 list-disc">
+                  <li>싱글 코어: {part.benchmarkScore.singleCore}</li>
+                  <li>멀티 코어: {part.benchmarkScore.multiCore}</li>
+                </ul>
+              </div>
             ) : (
-              <p className="text-gray-700 mb-1">⚙️ Geekbench 점수: {part.benchmarkScore}</p>
+              <p className="text-gray-700 mb-1">
+                ⚙️ 벤치마크 점수: {part.benchmarkScore}
+              </p>
             )}
+
             <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
               💬 AI 한줄평: {part.review}
             </p>
