@@ -5,20 +5,20 @@ const Home = () => {
     <div className="p-8">
       <h2 className="text-3xl font-bold mb-4">💻 가성비 PC 부품 추천</h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Link to="/cpu" className="p-4 bg-gray-100 rounded-lg text-center">
+        <Link to="/category/cpu" className="p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200 transition">
           🖥️ CPU
         </Link>
-        <Link to="/gpu" className="p-4 bg-gray-100 rounded-lg text-center">
+        <Link to="/category/gpu" className="p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200 transition">
           🎮 GPU
         </Link>
-        <Link to="/메인보드" className="p-4 bg-gray-100 rounded-lg text-center">
+        <Link to="/category/mainboard" className="p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200 transition">
           🔧 메인보드
         </Link>
-        <Link to="/메모리" className="p-4 bg-gray-100 rounded-lg text-center">
+        <Link to="/category/memory" className="p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200 transition">
           📀 메모리
         </Link>
-        <Link to="/AI추천" className="p-4 bg-gray-100 rounded-lg text-center">
-          🧠AI 추천(CHAT GPT)
+        <Link to="/ai-recommend" className="p-4 bg-gray-100 rounded-lg text-center hover:bg-gray-200 transition">
+          🧠 AI 추천 (ChatGPT)
         </Link>
       </div>
     </div>
