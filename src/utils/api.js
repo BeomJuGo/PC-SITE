@@ -1,5 +1,4 @@
-// ✅ api.js (전체 수정된 버전)
-
+// ✅ 부품 리스트 가져오기
 export const fetchParts = async (category) => {
   const partsData = {
     cpu: [
@@ -18,6 +17,7 @@ export const fetchParts = async (category) => {
   });
 };
 
+// ✅ 네이버 가격 정보 + 이미지 가져오기
 export const fetchNaverPrice = async (query) => {
   try {
     const response = await fetch(
@@ -35,6 +35,7 @@ export const fetchNaverPrice = async (query) => {
   }
 };
 
+// ✅ GPT 한줄평 요청
 export const fetchGPTReview = async (partName) => {
   try {
     const response = await fetch("https://pc-site-backend.onrender.com/api/gpt-review", {
@@ -49,6 +50,7 @@ export const fetchGPTReview = async (partName) => {
   }
 };
 
+// ✅ CPU 벤치마크 점수 요청
 export const fetchCpuBenchmark = async (cpuName) => {
   try {
     const response = await fetch(
@@ -61,10 +63,12 @@ export const fetchCpuBenchmark = async (cpuName) => {
   }
 };
 
+// ✅ GPU 벤치마크는 아직 미지원
 export const fetchGpuBenchmark = async (gpuName) => {
   return "지원 예정";
 };
 
+// ✅ 모든 부품 정보 통합 가져오기
 export const fetchFullPartData = async (category) => {
   const parts = await fetchParts(category);
 
@@ -83,16 +87,18 @@ export const fetchFullPartData = async (category) => {
       return { ...part, price, image, review, benchmarkScore };
     })
   );
-  
+
+  return enrichedParts;
+};
+
+// ✅ 부품 상세 정보 요청
 export const fetchPartDetail = async (category, id) => {
   const res = await fetch(`https://pc-site-backend.onrender.com/api/part-detail?category=${category}&id=${id}`);
   return await res.json();
 };
 
+// ✅ 가격 변동 그래프용 데이터 요청
 export const fetchPriceHistory = async (category, id) => {
   const res = await fetch(`https://pc-site-backend.onrender.com/api/price-history?category=${category}&id=${id}`);
   return await res.json();
-};
-
-  return enrichedParts;
 };
