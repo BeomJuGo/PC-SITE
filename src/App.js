@@ -1,22 +1,19 @@
+// ✅ App.js - 라우팅 구성 파일
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Category from "./pages/Category";
+import Detail from "./pages/Detail";
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <Header />
-      <main className="container mx-auto p-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:category" element={<Category />} />
-        </Routes>
-      </main>
-      <Footer />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/category/:category" element={<Category />} />
+        <Route path="/detail/:category/:id" element={<Detail />} />
+      </Routes>
     </Router>
   );
-}
+};
 
 export default App;
