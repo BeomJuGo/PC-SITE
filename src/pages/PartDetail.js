@@ -1,4 +1,3 @@
-// ✅ PartDetail.js (수정된 Detail 컴포넌트)
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchPartDetail, fetchPriceHistory } from "../utils/api";
@@ -12,7 +11,6 @@ const Detail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       const detail = await fetchPartDetail(category, id);
       const history = await fetchPriceHistory(category, id);
       setPart(detail);
@@ -22,32 +20,32 @@ const Detail = () => {
     fetchData();
   }, [category, id]);
 
-  if (loading) return <div className="text-center p-4 text-gray-500">⏳ 로딩 중...</div>;
+  if (loading) return <div className="text-center text-gray-500">⏳ 로딩 중...</div>;
   if (!part) return <div className="text-center text-red-500">❌ 부품 정보를 불러올 수 없습니다.</div>;
 
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-3xl font-bold mb-4">{part.name}</h2>
-
       <div className="flex items-start gap-4">
         <img src={part.image} alt={part.name} className="w-36 h-36 object-contain border rounded" />
         <div className="flex-1">
-          <p className="mb-2">💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}</p>
+          <p className="mb-2">💰 가격: {Number(part.price).toLocaleString()}원</p>
           {category === "cpu" && (
             <div className="mb-2">
               ⚙️ Geekbench 점수:
               <ul className="ml-5 list-disc">
-                <li>싱글 코어: {part.benchmarkScore?.singleCore}</li>
-                <li>멀티 코어: {part.benchmarkScore?.multiCore}</li>
+                <li>싱글 코어: {part.benchmarkScore.singleCore}</li>
+                <li>멀티 코어: {part.benchmarkScore.multiCore}</li>
               </ul>
             </div>
           )}
+          <p className="mb-2">📋 주요 사양: {part.specSummary}</p>
           <p className="italic text-blue-600 whitespace-pre-line mt-2">💬 {part.review}</p>
         </div>
       </div>
 
       <div className="mt-10">
-        <h3 className="text-xl font-semibold mb-2">📈 최근 가격 변동</h3>
+        <h3 className="text-xl font-semibold mb-2">📈 가격 변동 추이</h3>
         {priceHistory.length > 0 ? (
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={priceHistory}>
@@ -59,7 +57,7 @@ const Detail = () => {
             </LineChart>
           </ResponsiveContainer>
         ) : (
-          <p className="text-gray-500">가격 변동 정보가 없습니다.</p>
+          <p className="text-gray-500">가격 정보 없음</p>
         )}
       </div>
     </div>
