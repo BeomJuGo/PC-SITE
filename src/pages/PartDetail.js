@@ -1,51 +1,74 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { fetchPartDetail, fetchPriceHistory } from "../utils/api";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
-const PartDetail = () => {
-  const { id, category } = useParams();
+const Detail = () => {
+  const { category, id } = useParams();
   const [part, setPart] = useState(null);
   const [priceHistory, setPriceHistory] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const detail = await fetchPartDetail(category, id);
       const history = await fetchPriceHistory(category, id);
       setPart(detail);
       setPriceHistory(history);
+      setLoading(false);
     };
     fetchData();
-  }, [id, category]);
+  }, [category, id]);
 
-  if (!part) return <div className="p-4">⏳ 불러오는 중...</div>;
+  if (loading) {
+    return <div className="text-center p-4 text-gray-500">⏳ 로딩 중...</div>;
+  }
+
+  if (!part) {
+    return <div className="text-center text-red-500">❌ 부품 정보를 불러올 수 없습니다.</div>;
+  }
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-3xl font-bold mb-4">{part.name}</h2>
-      <div className="flex items-start gap-6 mb-4">
-        <img src={part.image} alt={part.name} className="w-32 h-32 object-contain border" />
-        <div>
-          <p className="text-gray-700">💰 현재가: {Number(part.price).toLocaleString()}원</p>
-          <p className="text-gray-700">⚙️ 싱글코어: {part.benchmarkScore?.singleCore}</p>
-          <p className="text-gray-700">⚙️ 멀티코어: {part.benchmarkScore?.multiCore}</p>
+
+      <div className="flex items-start gap-4">
+        <img src={part.image} alt={part.name} className="w-36 h-36 object-contain border rounded" />
+
+        <div className="flex-1">
+          <p className="mb-2">💰 가격: {Number(part.price).toLocaleString()}원</p>
+          {category === "cpu" && (
+            <div className="mb-2">
+              ⚙️ Geekbench 점수:
+              <ul className="ml-5 list-disc">
+                <li>싱글 코어: {part.benchmarkScore.singleCore}</li>
+                <li>멀티 코어: {part.benchmarkScore.multiCore}</li>
+              </ul>
+            </div>
+          )}
+          <p className="italic text-blue-600 whitespace-pre-line mt-2">💬 {part.review}</p>
         </div>
       </div>
 
-      <p className="text-blue-600 italic whitespace-pre-line">{part.review}</p>
-
-      <h3 className="text-xl font-semibold mt-6 mb-2">📈 최근 가격 변동</h3>
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={priceHistory}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis domain={["auto", "auto"]} />
-          <Tooltip />
-          <Line type="monotone" dataKey="price" stroke="#8884d8" />
-        </LineChart>
-      </ResponsiveContainer>
+      <div className="mt-10">
+        <h3 className="text-xl font-semibold mb-2">📈 최근 가격 변동</h3>
+        {priceHistory.length > 0 ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={priceHistory}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis domain={["auto", "auto"]} tickFormatter={(v) => `${v.toLocaleString()}원`} />
+              <Tooltip formatter={(value) => `${Number(value).toLocaleString()}원`} />
+              <Line type="monotone" dataKey="price" stroke="#3b82f6" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <p className="text-gray-500">가격 변동 정보가 없습니다.</p>
+        )}
+      </div>
     </div>
   );
 };
 
-export default PartDetail;
+export default Detail;
