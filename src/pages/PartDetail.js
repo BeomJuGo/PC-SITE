@@ -30,6 +30,7 @@ const Detail = () => {
 
   if (loading)
     return <div className="text-center text-gray-500">⏳ 로딩 중...</div>;
+
   if (!part)
     return (
       <div className="text-center text-red-500">
@@ -47,6 +48,7 @@ const Detail = () => {
           alt={part.name}
           className="w-36 h-36 object-contain border rounded"
         />
+
         <div className="flex-1">
           <p className="mb-2">
             💰 가격:{" "}
@@ -55,33 +57,32 @@ const Detail = () => {
               : `${Number(part.price).toLocaleString()}원`}
           </p>
 
-          {category === "cpu" && (
+          {category === "cpu" && part.benchmarkScore && (
             <div className="mb-2">
               ⚙️ Geekbench 점수:
-              <ul className="ml-5 list-disc">
+              <ul className="ml-5 list-disc text-sm">
                 <li>싱글 코어: {part.benchmarkScore.singleCore}</li>
                 <li>멀티 코어: {part.benchmarkScore.multiCore}</li>
               </ul>
             </div>
           )}
 
-          {/* ✅ 주요 사양 표시 */}
-          {part.specs && (
+          {/* ✅ 주요 사양 출력 (GPT 요약 기반) */}
+          {part.specSummary && (
             <div className="mb-2">
-              📋 주요 사양:
-              <ul className="ml-5 list-disc text-sm mt-1 text-gray-800">
-                {Object.entries(part.specs).map(([key, value]) => (
-                  <li key={key}>
-                    <strong>{key}</strong>: {value}
-                  </li>
-                ))}
-              </ul>
+              📋 주요 사양 요약:
+              <p className="ml-4 text-sm text-gray-800 whitespace-pre-line">
+                {part.specSummary}
+              </p>
             </div>
           )}
 
-          <p className="italic text-blue-600 whitespace-pre-line mt-2">
-            💬 {part.review}
-          </p>
+          {/* ✅ AI 한줄평 (장점/단점 형식 기대) */}
+          {part.review && (
+            <p className="italic text-blue-600 whitespace-pre-line mt-2">
+              💬 {part.review}
+            </p>
+          )}
         </div>
       </div>
 
