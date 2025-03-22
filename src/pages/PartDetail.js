@@ -1,3 +1,4 @@
+// ✅ PartDetail.js (수정된 Detail 컴포넌트)
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchPartDetail, fetchPriceHistory } from "../utils/api";
@@ -21,13 +22,8 @@ const Detail = () => {
     fetchData();
   }, [category, id]);
 
-  if (loading) {
-    return <div className="text-center p-4 text-gray-500">⏳ 로딩 중...</div>;
-  }
-
-  if (!part) {
-    return <div className="text-center text-red-500">❌ 부품 정보를 불러올 수 없습니다.</div>;
-  }
+  if (loading) return <div className="text-center p-4 text-gray-500">⏳ 로딩 중...</div>;
+  if (!part) return <div className="text-center text-red-500">❌ 부품 정보를 불러올 수 없습니다.</div>;
 
   return (
     <div className="max-w-3xl mx-auto p-4">
@@ -35,15 +31,14 @@ const Detail = () => {
 
       <div className="flex items-start gap-4">
         <img src={part.image} alt={part.name} className="w-36 h-36 object-contain border rounded" />
-
         <div className="flex-1">
-          <p className="mb-2">💰 가격: {Number(part.price).toLocaleString()}원</p>
+          <p className="mb-2">💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}</p>
           {category === "cpu" && (
             <div className="mb-2">
               ⚙️ Geekbench 점수:
               <ul className="ml-5 list-disc">
-                <li>싱글 코어: {part.benchmarkScore.singleCore}</li>
-                <li>멀티 코어: {part.benchmarkScore.multiCore}</li>
+                <li>싱글 코어: {part.benchmarkScore?.singleCore}</li>
+                <li>멀티 코어: {part.benchmarkScore?.multiCore}</li>
               </ul>
             </div>
           )}
@@ -58,7 +53,7 @@ const Detail = () => {
             <LineChart data={priceHistory}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
-              <YAxis domain={["auto", "auto"]} tickFormatter={(v) => `${v.toLocaleString()}원`} />
+              <YAxis tickFormatter={(v) => `${v.toLocaleString()}원`} />
               <Tooltip formatter={(value) => `${Number(value).toLocaleString()}원`} />
               <Line type="monotone" dataKey="price" stroke="#3b82f6" strokeWidth={2} />
             </LineChart>
