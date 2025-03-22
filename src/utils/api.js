@@ -1,25 +1,13 @@
 export const fetchParts = async (category) => {
-  const partsData = {
+  return {
     cpu: [
-      {
-        id: 1,
-        name: "Intel Core i5-14600K",
-        specs: {
-          cores: 14, threads: 20,
-          baseClock: "3.5GHz", boostClock: "5.3GHz", TDP: "125W"
-        }
-      },
-      {
-        id: 2,
-        name: "Intel Core i9-14900K",
-        specs: {
-          cores: 24, threads: 32,
-          baseClock: "3.2GHz", boostClock: "6.0GHz", TDP: "125W"
-        }
-      }
-    ]
-  };
-  return new Promise((resolve) => setTimeout(() => resolve(partsData[category]), 300));
+      { id: 1, name: "Intel Core i5-14600K" },
+      { id: 2, name: "Intel Core i9-14900K" },
+    ],
+    gpu: [
+      { id: 1, name: "NVIDIA RTX 4070" },
+    ],
+  }[category] || [];
 };
 
 export const fetchNaverPrice = async (query) => {
@@ -29,10 +17,27 @@ export const fetchNaverPrice = async (query) => {
     const item = data.items?.[0];
     return {
       price: item?.lprice || "가격 정보 없음",
-      image: item?.image || ""
+      image: item?.image || "",
     };
   } catch {
-    return { price: "가격 정보를 가져올 수 없습니다.", image: "" };
+    return { price: "가격 오류", image: "" };
+  }
+};
+
+export const fetchGPTReview = async (partName) => {
+  try {
+    const res = await fetch("https://pc-site-backend.onrender.com/api/gpt-review", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ partName }),
+    });
+    const data = await res.json();
+    return {
+      review: data.review || "한줄평 없음",
+      specSummary: data.specSummary || "사양 없음",
+    };
+  } catch {
+    return { review: "한줄평 오류", specSummary: "사양 오류" };
   }
 };
 
@@ -46,43 +51,23 @@ export const fetchCpuBenchmark = async (cpuName) => {
   }
 };
 
-export const fetchGPTReview = async (partName, specSummary) => {
-  try {
-    const res = await fetch("https://pc-site-backend.onrender.com/api/gpt-review", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ partName, specs: specSummary })
-    });
-    const data = await res.json();
-    return data.review || "한줄평 없음";
-  } catch {
-    return "한줄평 생성 실패";
-  }
-};
-
 export const fetchFullPartData = async (category) => {
   const parts = await fetchParts(category);
 
-  const enriched = await Promise.all(
+  return await Promise.all(
     parts.map(async (part) => {
-      const specSummary = Object.entries(part.specs)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join(", ");
-
       const { price, image } = await fetchNaverPrice(part.name);
-      const benchmarkScore = await fetchCpuBenchmark(part.name);
-      const review = await fetchGPTReview(part.name, specSummary);
+      const { review, specSummary } = await fetchGPTReview(part.name);
+      const benchmarkScore = category === "cpu" ? await fetchCpuBenchmark(part.name) : "지원 예정";
 
-      return { ...part, price, image, specSummary, review, benchmarkScore };
+      return { ...part, price, image, review, specSummary, benchmarkScore };
     })
   );
-
-  return enriched;
 };
 
 export const fetchPartDetail = async (category, id) => {
-  const parts = await fetchFullPartData(category);
-  return parts.find((p) => p.id.toString() === id.toString());
+  const data = await fetchFullPartData(category);
+  return data.find((d) => d.id.toString() === id.toString());
 };
 
 export const fetchPriceHistory = async () => {
