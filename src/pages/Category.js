@@ -1,5 +1,3 @@
-// ✅ Category.js (전체 수정된 버전)
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchFullPartData } from "../utils/api";
@@ -16,6 +14,7 @@ const Category = () => {
       setParts(enrichedParts);
       setLoading(false);
     };
+
     fetchData();
   }, [category]);
 
@@ -33,13 +32,18 @@ const Category = () => {
             key={part.id}
             className="w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition flex flex-col h-auto"
           >
-            <img
-              src={part.image}
-              alt={`${part.name} 이미지`}
-              className="w-full h-48 object-contain mb-3 rounded-md border"
-              onError={(e) => (e.target.style.display = "none")}
-            />
-            <h3 className="text-xl font-semibold mb-2">{part.name}</h3>
+            {/* 텍스트 + 이미지를 가로 정렬 */}
+            <div className="flex justify-between items-start mb-3">
+              <h3 className="text-xl font-semibold">{part.name}</h3>
+              {part.image && (
+                <img
+                  src={part.image}
+                  alt={part.name}
+                  className="w-20 h-20 object-contain border border-gray-300 rounded-md ml-4"
+                />
+              )}
+            </div>
+
             <p className="text-gray-700 mb-1">
               💰 가격: {isNaN(Number(part.price)) ? part.price : `${Number(part.price).toLocaleString()}원`}
             </p>
