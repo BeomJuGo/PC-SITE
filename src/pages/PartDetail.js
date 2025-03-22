@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchPartDetail, fetchPriceHistory } from "../utils/api";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 
 const Detail = () => {
   const { category, id } = useParams();
@@ -20,16 +28,33 @@ const Detail = () => {
     fetchData();
   }, [category, id]);
 
-  if (loading) return <div className="text-center text-gray-500">⏳ 로딩 중...</div>;
-  if (!part) return <div className="text-center text-red-500">❌ 부품 정보를 불러올 수 없습니다.</div>;
+  if (loading)
+    return <div className="text-center text-gray-500">⏳ 로딩 중...</div>;
+  if (!part)
+    return (
+      <div className="text-center text-red-500">
+        ❌ 부품 정보를 불러올 수 없습니다.
+      </div>
+    );
 
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-3xl font-bold mb-4">{part.name}</h2>
+
       <div className="flex items-start gap-4">
-        <img src={part.image} alt={part.name} className="w-36 h-36 object-contain border rounded" />
+        <img
+          src={part.image}
+          alt={part.name}
+          className="w-36 h-36 object-contain border rounded"
+        />
         <div className="flex-1">
-          <p className="mb-2">💰 가격: {Number(part.price).toLocaleString()}원</p>
+          <p className="mb-2">
+            💰 가격:{" "}
+            {isNaN(Number(part.price))
+              ? part.price
+              : `${Number(part.price).toLocaleString()}원`}
+          </p>
+
           {category === "cpu" && (
             <div className="mb-2">
               ⚙️ Geekbench 점수:
@@ -39,8 +64,24 @@ const Detail = () => {
               </ul>
             </div>
           )}
-          <p className="mb-2">📋 주요 사양: {part.specSummary}</p>
-          <p className="italic text-blue-600 whitespace-pre-line mt-2">💬 {part.review}</p>
+
+          {/* ✅ 주요 사양 표시 */}
+          {part.specs && (
+            <div className="mb-2">
+              📋 주요 사양:
+              <ul className="ml-5 list-disc text-sm mt-1 text-gray-800">
+                {Object.entries(part.specs).map(([key, value]) => (
+                  <li key={key}>
+                    <strong>{key}</strong>: {value}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <p className="italic text-blue-600 whitespace-pre-line mt-2">
+            💬 {part.review}
+          </p>
         </div>
       </div>
 
@@ -52,8 +93,15 @@ const Detail = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis tickFormatter={(v) => `${v.toLocaleString()}원`} />
-              <Tooltip formatter={(value) => `${Number(value).toLocaleString()}원`} />
-              <Line type="monotone" dataKey="price" stroke="#3b82f6" strokeWidth={2} />
+              <Tooltip
+                formatter={(value) => `${Number(value).toLocaleString()}원`}
+              />
+              <Line
+                type="monotone"
+                dataKey="price"
+                stroke="#3b82f6"
+                strokeWidth={2}
+              />
             </LineChart>
           </ResponsiveContainer>
         ) : (
