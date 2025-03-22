@@ -83,6 +83,16 @@ export const fetchFullPartData = async (category) => {
       return { ...part, price, image, review, benchmarkScore };
     })
   );
+  
+export const fetchPartDetail = async (category, id) => {
+  const res = await fetch(`https://pc-site-backend.onrender.com/api/part-detail?category=${category}&id=${id}`);
+  return await res.json();
+};
+
+export const fetchPriceHistory = async (category, id) => {
+  const res = await fetch(`https://pc-site-backend.onrender.com/api/price-history?category=${category}&id=${id}`);
+  return await res.json();
+};
 
   return enrichedParts;
 };
