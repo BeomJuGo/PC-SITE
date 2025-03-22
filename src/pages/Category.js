@@ -32,29 +32,17 @@ const Category = () => {
           <div
             key={part.id}
             onClick={() => navigate(`/detail/${category}/${part.id}`)}
-            className="cursor-pointer w-full max-w-md mx-auto p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition-all duration-300 flex flex-col h-auto"
+            className="cursor-pointer p-5 border border-gray-200 rounded-xl shadow-md bg-white hover:shadow-lg transition-all duration-300"
           >
-            {/* 제목 + 이미지 */}
             <div className="flex justify-between items-start mb-3">
               <h3 className="text-xl font-semibold">{part.name}</h3>
               {part.image && (
-                <img
-                  src={part.image}
-                  alt={part.name}
-                  className="w-20 h-20 object-contain border border-gray-300 rounded-md ml-4"
-                />
+                <img src={part.image} alt={part.name} className="w-20 h-20 object-contain rounded border" />
               )}
             </div>
 
-            {/* 가격 */}
-            <p className="text-gray-700 mb-1">
-              💰 가격:{" "}
-              {isNaN(Number(part.price))
-                ? part.price
-                : `${Number(part.price).toLocaleString()}원`}
-            </p>
+            <p className="text-gray-700 mb-1">💰 가격: {Number(part.price).toLocaleString()}원</p>
 
-            {/* 벤치마크 점수 */}
             {category === "cpu" ? (
               <div className="text-gray-700 mb-1">
                 ⚙️ Geekbench 점수:
@@ -64,15 +52,10 @@ const Category = () => {
                 </ul>
               </div>
             ) : (
-              <p className="text-gray-700 mb-1">
-                ⚙️ 벤치마크 점수: {part.benchmarkScore}
-              </p>
+              <p className="text-gray-700 mb-1">⚙️ 벤치마크 점수: {part.benchmarkScore}</p>
             )}
 
-            {/* 한줄평 */}
-            <p className="text-blue-600 italic mt-2 whitespace-pre-line break-words leading-relaxed w-full">
-              💬 AI 한줄평: {part.review}
-            </p>
+            <p className="text-blue-600 italic mt-2">💬 {part.review}</p>
           </div>
         ))}
       </div>
